@@ -1,0 +1,18 @@
+{
+	"version": "0.1.1",
+	"name": "vibin-hooks",
+	"author": "Auri <me@auri.xyz>",
+	"description": "Absolutely vibin' hooks for (P)React.",
+	"homepage": "https://github.com/Aurailus/vibin-hooks",
+	"license": "MIT",
+	"main": "./Main.js",
+	"typings": "./Main.d.ts",
+	"scripts": {
+		"start": "echo 'This is the distributed package, please download the source from https://github.com/Aurailus/useful-hooks to develop useful-hooks!'",
+		"dev": "npm start",
+		"build": "npm start"
+	},
+	"peerDependencies": {
+		"react": "^16"
+	}
+}
