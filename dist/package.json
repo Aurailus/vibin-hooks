@@ -8,7 +8,7 @@
 	"main": "./Main.js",
 	"typings": "./Main.d.ts",
 	"scripts": {
-		"start": "echo 'This is the distributed package, please download the source from https://github.com/Aurailus/useful-hooks to develop useful-hooks!'",
+		"start": "echo 'This is the distributed package, please download the source from https://github.com/Aurailus/vibin-hooks to develop vibin-hooks!'",
 		"dev": "npm start",
 		"build": "npm start"
 	},

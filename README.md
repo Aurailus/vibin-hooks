@@ -1,8 +1,8 @@
 # Absolutely Vibin' Hooks for (P)React.
 
-## Okay, but what is this, really?
+## Okay, but what is this, anyways?
 
-I've been working on a lot of react projects recently, and I seem to run into the need for the same hooks again and again. So I thought: 'why not make this simpler and just publish a package with all of them in it?' And now we're here. All of them are compatible with React and Preact, and the package has its own typings, because I'm not a troglodyte.
+I've been working on a lot of React projects recently, and I seem to run into the need for the same hooks again and again. So I thought: 'why not make this simpler and just publish a package with all of them in it?' And now we're here. All of them are compatible with React and Preact, and the package has its own typings, because I'm not a troglodyte.
 
 ## What hooks are included?
 
