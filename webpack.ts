@@ -14,49 +14,60 @@ export default function() {
 		entry: { main: './src/test/Main.tsx' },
 		output: { path: resolve(__dirname, 'build') },
 		resolve: {
-			extensions: [ '.ts', '.tsx', '.js', '.jsx' ],
+			extensions: ['.ts', '.tsx', '.js', '.jsx'],
 		},
 
 		plugins: [
 			new ForkTsCheckerPlugin({
-				typescript: { configFile: resolve(__dirname, 'tsconfig.json'), },
+				typescript: { configFile: resolve(__dirname, 'tsconfig.json') },
 				eslint: {
 					files: './**/*.{ts,tsx,js,jsx}',
 					options: {
-						configFile: resolve(__dirname, '.eslintrc.js'),
+						configFile: resolve(__dirname, '.eslintrc.json'),
 						emitErrors: true,
 						failOnHint: true,
-						typeCheck: true
-					}
-				}
-			})
+						typeCheck: true,
+					},
+				},
+			}),
 		],
 
 		module: {
-			rules: [{
-				test: /\.[t|j]sx?$/,
-				loader: 'babel-loader',
-				options: {
-					babelrc: false,
-					cacheDirectory: true,
-					presets: [
-						[ '@babel/preset-typescript', {
-							isTSX: true,
-							allExtensions: true,
-							jsxPragma: 'createElement'
-						}],
-						[ '@babel/preset-env', {
-							targets: { browsers: ['Chrome 78']},
-						}]
-					],
-					plugins: [
-						[ '@babel/transform-react-jsx', {
-				    	pragma: 'createElement'
-				    }],
-						[ '@babel/plugin-proposal-class-properties' ]
-					]
+			rules: [
+				{
+					test: /\.[t|j]sx?$/,
+					loader: 'babel-loader',
+					options: {
+						babelrc: false,
+						cacheDirectory: true,
+						presets: [
+							[
+								'@babel/preset-typescript',
+								{
+									isTSX: true,
+									allExtensions: true,
+									jsxPragma: 'createElement',
+								},
+							],
+							[
+								'@babel/preset-env',
+								{
+									targets: { browsers: ['Chrome 78'] },
+								},
+							],
+						],
+						plugins: [
+							[
+								'@babel/transform-react-jsx',
+								{
+									pragma: 'createElement',
+								},
+							],
+							['@babel/plugin-proposal-class-properties'],
+						],
+					},
 				},
-			}]
+			],
 		},
 
 		devServer: {
@@ -76,7 +87,7 @@ export default function() {
 				`;
 
 				app.get('/', (_: any, res: any) => res.send(doc));
-			}
-		}
+			},
+		},
 	};
 }

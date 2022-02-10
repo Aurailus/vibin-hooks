@@ -15,7 +15,12 @@ export default function useStoredState<T>(def: T | (() => T), key: string): [
 
 	const [ value, setValue ] = useState<T>(() => {
 		const stored = window.localStorage.getItem(key);
-		return stored !== null ? JSON.parse(stored) : def;
+		try {
+			return stored !== null && stored !== undefined ? JSON.parse(stored) : def;
+		} catch (e) {
+			console.warn('StoredState error:' + e);
+			return def;
+		}
 	});
 
 	useEffect(() => window.localStorage.setItem(key, JSON.stringify(value)), [ key, value ]);
