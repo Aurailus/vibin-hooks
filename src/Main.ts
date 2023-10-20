@@ -22,5 +22,6 @@ export { default as usePrevious } from './usePrevious';
 
 export { default as useRerender } from './useRerender';
 
-export { default as useStoredState } from './useStoredState';
+export { default as useStore } from './useStore';
 
+export { default as useStoredState } from './useStoredState';

@@ -7,19 +7,21 @@ import { useState, useEffect } from 'react';
  *
  * @param def - The default value if no stored value exists.
  * @param key - The unique key to store the value under.
+ * @param serverDefault - The default value if the hook is used in SSR.
  * @returns the value and a function to update it, wrapped in an array.
  */
 
-export default function useStoredState<T>(def: T | (() => T), key: string): [
+export default function useStoredState<T>(def: T | (() => T), key: string, serverDefault?: T | (() => T)): [
 	T, (value: T | ((currentValue: T) => T)) => void ] {
 
 	const [ value, setValue ] = useState<T>(() => {
-		const stored = window.localStorage.getItem(key);
+		const stored = window?.localStorage.getItem(key);
 		try {
 			return stored !== null && stored !== undefined ? JSON.parse(stored) : def;
 		} catch (e) {
 			console.warn('StoredState error:' + e);
-			return def;
+			const defObj = ('window' in globalThis ? def : (serverDefault ?? def));
+			return typeof defObj === 'function' ? (defObj as any)() : defObj;
 		}
 	});
 
