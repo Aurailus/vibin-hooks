@@ -1,12 +1,19 @@
-import { useCallback, useRef, useState } from 'react';
+import useLazyRef from './useLazyRef';
+import { useCallback, useState } from 'react';
 
 type StoreReturnValue<T> = T extends Record<any, any> ? Readonly<T> : T extends Array<any> ? Readonly<T> : T;
 
-function StoreAccessor<T>(): StoreReturnValue<T>;
-function StoreAccessor<T>(v: T | ((value: T) => T)): StoreReturnValue<T>;
-function StoreAccessor<T>(_v?: T | ((value: T) => T)): StoreReturnValue<T> {
+function StoreFnType<T>(): StoreReturnValue<T>;
+function StoreFnType<T>(v: T | ((value: T) => T)): StoreReturnValue<T>;
+function StoreFnType<T>(_v?: T | ((value: T) => T)): StoreReturnValue<T> {
 	throw new Error('This function is only for typing purposes.');
 };
+
+/**
+ * A store, which contains a value of type T. May be set or get by calling as a function.
+ */
+
+export type Store<T> = typeof StoreFnType<T>;
 
 /**
  * `useStore` is an alternative to `useState` which might expose a more desireable syntax.
@@ -20,22 +27,22 @@ function StoreAccessor<T>(_v?: T | ((value: T) => T)): StoreReturnValue<T> {
  * This hook will cause the component to rerender if the value changes, just like regular `useState`.
  *
  * @param initial - The initial value to store, or a function to generate it.
- * @returns a getter/setter function for retrieving and mutating the stored value.
+ * @returns a `Store` of the value type.
  */
 
-export default function useStore<T>(initial: T | (() => T)): typeof StoreAccessor<T> {
-	const value = useRef(initial instanceof Function ? initial() : initial);
+export default function useStore<T>(initial: T | (() => T)): Store<T> {
+	const value = useLazyRef(() => initial instanceof Function ? initial() : initial);
 	const [ , setId ] = useState(0);
 
 	const fn = useCallback(function (newValue?: T | ((value: T) => T)) {
 		if (arguments.length === 0) return value.current;
 
 		const oldValue = value.current;
-		value.current = (newValue instanceof Function) ? (value as any)(value.current) : newValue!;
+		value.current = (newValue instanceof Function) ? (newValue as any)(value.current) : newValue!;
 		if (value.current !== oldValue) setId(id => (id + 1) % Number.MAX_SAFE_INTEGER);
 
 		return value.current;
 	}, []);
 
-	return fn as typeof StoreAccessor<T>;
+	return fn as Store<T>;
 }
