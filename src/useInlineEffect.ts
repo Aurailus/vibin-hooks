@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 
-/** A hook's dependants, either an array of unknown values or undefined. */
-export type Dependants = unknown[];
+/** A hook's dependant, either an array of unknown values or undefined. */
+export type Dependant = unknown[];
 
 /** A function supplied to `useInlineEffect`. */
 export type InlineEffectFunction = () => void;
@@ -14,18 +14,14 @@ export type InlineEffectFunction = () => void;
  * @param dep - An optional array of dependants, following the functionality of `useEffect`.
  */
 
-export default function useInlineEffect(fn: InlineEffectFunction, dep?: Dependants) {
+export default function useInlineEffect(fn: InlineEffectFunction, dep?: Dependant) {
 	const previous = useRef<undefined | unknown[]>(undefined);
 
-	let isDirty = !previous.current || !dep || dep.length !== previous.current.length;
-	if (!isDirty && dep && previous.current) {
-		for (let i = 0; i < dep.length; i++) {
-			if (dep[i] !== previous.current[i]) {
-				isDirty = true;
-				break;
-			}
-		}
-	}
+	if (!previous.current || !dep ||
+		dep.length !== previous.current.length ||
+		dep.some((cur, i) => cur !== previous.current![i])) {
 
-	if (isDirty) fn();
+		previous.current = dep ? [ ...dep ] : undefined;
+		fn();
+	}
 }

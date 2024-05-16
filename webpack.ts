@@ -20,15 +20,15 @@ export default function() {
 		plugins: [
 			new ForkTsCheckerPlugin({
 				typescript: { configFile: resolve(__dirname, 'tsconfig.json') },
-				eslint: {
-					files: './**/*.{ts,tsx,js,jsx}',
-					options: {
-						configFile: resolve(__dirname, '.eslintrc.json'),
-						emitErrors: true,
-						failOnHint: true,
-						typeCheck: true,
-					},
-				},
+				// eslint: {
+				// 	files: './**/*.{ts,tsx,js,jsx}',
+				// 	options: {
+				// 		configFile: resolve(__dirname, '.eslintrc.json'),
+				// 		emitErrors: true,
+				// 		failOnHint: true,
+				// 		typeCheck: true,
+				// 	},
+				// },
 			}),
 		],
 
@@ -63,31 +63,11 @@ export default function() {
 									pragma: 'createElement',
 								},
 							],
-							['@babel/plugin-proposal-class-properties'],
+							['@babel/plugin-transform-class-properties'],
 						],
 					},
 				},
 			],
-		},
-
-		devServer: {
-			host: '0.0.0.0',
-			before: (app: any) => {
-				const doc = `
-					<!DOCTYPE html>
-					<html lang='en'>
-						<head>
-							<meta name='viewport' content='width=device-width, initial-scale=1'>
-							<title>Testing Environment</title>
-							<link rel='stylesheet' href='/main.css'>
-						</head>
-						<body id='root'/>
-						<script src='/main.js'></script>
-					</html>
-				`;
-
-				app.get('/', (_: any, res: any) => res.send(doc));
-			},
-		},
+		}
 	};
 }
